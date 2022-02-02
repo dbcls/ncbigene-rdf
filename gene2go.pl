@@ -36,7 +36,11 @@ while (<>) {
     } else {
         die;
     }
-    $GO{$geneid}{$goid}{$evidence}{$qualifier}{$pubmed} = 1;
+    if ($GO{$geneid}{$goid}{$evidence}{$qualifier}{$pubmed}) {
+        die;
+    } else {
+        $GO{$geneid}{$goid}{$evidence}{$qualifier}{$pubmed} = $category;
+    }
     $TAX{$geneid}{$taxid} = 1;
 }
 
@@ -48,12 +52,14 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
     for my $goid (@goid) {
         for my $evidence (sort keys %{$GO{$geneid}{$goid}}) {
             for my $qualifier (sort keys %{$GO{$geneid}{$goid}{$evidence}}) {
+                my @pubmed = keys %{$GO{$geneid}{$goid}{$evidence}{$qualifier}};
+                my $category = $GO{$geneid}{$goid}{$evidence}{$qualifier}{$pubmed[0]};
                 my $annotation = "";
                 $annotation .= "    [\n";
                 $annotation .= "        :hasGO obo:$goid ;\n";
+                $annotation .= "        :category :$category ;\n";
                 $annotation .= "        :evidence :$evidence ;\n";
                 $annotation .= "        " . parse_qualifier($qualifier) . " ;\n";
-                my @pubmed = keys %{$GO{$geneid}{$goid}{$evidence}{$qualifier}};
                 if (@pubmed && @pubmed == 1) {
                     $annotation .= "        dct:references " . parse_pubmed($pubmed[0]) . "\n";
                 } else {
