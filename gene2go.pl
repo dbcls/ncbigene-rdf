@@ -43,14 +43,14 @@ while (<>) {
 for my $geneid (sort {$a <=> $b} keys %GO) {
     my $taxid = get_taxid($geneid);
     my @goid = sort keys %{$GO{$geneid}};
-    print "ncbigene:$geneid :hasGOannotation\n";
+    print "ncbigene:$geneid :hasGOAnnotation\n";
     my @annotation = ();
     for my $goid (@goid) {
         for my $evidence (sort keys %{$GO{$geneid}{$goid}}) {
             for my $qualifier (sort keys %{$GO{$geneid}{$goid}{$evidence}}) {
                 my $annotation = "";
                 $annotation .= "    [\n";
-                $annotation .= "        :hasGOterm obo:$goid ;\n";
+                $annotation .= "        :hasGO obo:$goid ;\n";
                 $annotation .= "        :evidence :$evidence ;\n";
                 $annotation .= "        " . parse_qualifier($qualifier) . " ;\n";
                 my @pubmed = keys %{$GO{$geneid}{$goid}{$evidence}{$qualifier}};
