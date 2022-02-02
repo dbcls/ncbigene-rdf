@@ -48,10 +48,12 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
     for my $goid (@goid) {
         for my $evidence (sort keys %{$GO{$geneid}{$goid}}) {
             for my $qualifier (sort keys %{$GO{$geneid}{$goid}{$evidence}}) {
-                my @pubmed = keys %{$GO{$geneid}{$goid}{$evidence}{$qualifier}};
                 my $annotation = "";
                 $annotation .= "    [\n";
                 $annotation .= "        :hasGOterm obo:$goid ;\n";
+                $annotation .= "        :evidence :$evidence ;\n";
+                $annotation .= "        " . parse_qualifier($qualifier) . " ;\n";
+                my @pubmed = keys %{$GO{$geneid}{$goid}{$evidence}{$qualifier}};
                 if (@pubmed && @pubmed == 1) {
                     if ($pubmed[0] eq "-") {
                         # skip
@@ -62,9 +64,6 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
                 } else {
                     die;
                 }
-                my $has_qualifier = parse_qualifier($qualifier);
-                $annotation .= "        $has_qualifier ;\n";
-                $annotation .= "        :evidence :$evidence\n";
                 $annotation .= "    ]";
                 push @annotation, $annotation;
             }
