@@ -35,7 +35,7 @@ while (<>) {
         $goid =~ s/:/_/;
     } else {
         die;
-    }        
+    }
     $GO{$geneid}{$goid}{$evidence}{$qualifier}{$pubmed} = 1;
     $TAX{$geneid}{$taxid} = 1;
 }
@@ -46,10 +46,8 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
     print "ncbigene:$geneid :hasGOannotation\n";
     my @annotation = ();
     for my $goid (@goid) {
-        my @evidence = sort keys %{$GO{$geneid}{$goid}};
-        for my $evidence (@evidence) {
-            my @qualifier = sort keys %{$GO{$geneid}{$goid}{$evidence}};
-            for my $qualifier (@qualifier) {
+        for my $evidence (sort keys %{$GO{$geneid}{$goid}}) {
+            for my $qualifier (sort keys %{$GO{$geneid}{$goid}{$evidence}}) {
                 my @pubmed = keys %{$GO{$geneid}{$goid}{$evidence}{$qualifier}};
                 my $annotation = "";
                 $annotation .= "    [\n";
