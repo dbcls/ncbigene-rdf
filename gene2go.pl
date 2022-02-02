@@ -55,12 +55,7 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
                 $annotation .= "        " . parse_qualifier($qualifier) . " ;\n";
                 my @pubmed = keys %{$GO{$geneid}{$goid}{$evidence}{$qualifier}};
                 if (@pubmed && @pubmed == 1) {
-                    if ($pubmed[0] eq "-") {
-                        $annotation .= "        dct:references :NA\n";
-                    } else {
-                        my $pmids = parse_pubmed($pubmed[0]);
-                        $annotation .= "        dct:references $pmids\n";
-                    }
+                    $annotation .= "        dct:references " . parse_pubmed($pubmed[0]) . "\n";
                 } else {
                     die;
                 }
@@ -95,6 +90,10 @@ sub parse_qualifier {
 
 sub parse_pubmed {
     my ($pubmed) = @_;
+
+    if ($pubmed eq "-") {
+        return ":NA";
+    }
     
     unless ($pubmed =~ /\d/) {
         die;
