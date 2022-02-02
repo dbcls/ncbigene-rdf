@@ -56,10 +56,10 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
                 my @pubmed = keys %{$GO{$geneid}{$goid}{$evidence}{$qualifier}};
                 if (@pubmed && @pubmed == 1) {
                     if ($pubmed[0] eq "-") {
-                        # skip
+                        $annotation .= "        dct:references :NA\n";
                     } else {
                         my $pmids = parse_pubmed($pubmed[0]);
-                        $annotation .= "        dct:references $pmids ;\n";
+                        $annotation .= "        dct:references $pmids\n";
                     }
                 } else {
                     die;
