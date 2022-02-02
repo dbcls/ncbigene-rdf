@@ -51,19 +51,18 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
                 my $annotation = "";
                 $annotation .= "    [\n";
                 $annotation .= "        :hasGOterm obo:$goid ;\n";
-                if (@pubmed) {
-                    if (@pubmed == 1 && $pubmed[0] eq "-") {
+                if (@pubmed && @pubmed == 1) {
+                    if ($pubmed[0] eq "-") {
                         # skip
-                    } elsif (@pubmed >= 2) {
-                        die;
                     } else {
-                        @pubmed = map { "pmid:" . $_ } @pubmed;
-                        $annotation .= "        dct:references @pubmed ;\n";
+                        my $pmids = parse_pubmed($pubmed[0]);
+                        $annotation .= "        dct:references $pmids ;\n";
                     }
                 } else {
                     die;
                 }
-                $annotation .= "        :qualifier :$qualifier ;\n";
+                my $has_qualifier = parse_qualifier($qualifier);
+                $annotation .= "        $has_qualifier ;\n";
                 $annotation .= "        :evidenceCode :$evidence\n";
                 $annotation .= "    ]";
                 push @annotation, $annotation;
@@ -75,4 +74,38 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
     my $goids = join(", ", @goid);
     print "    :gene2go $goids .\n";
     print "\n";
+}
+
+################################################################################
+### Function ###################################################################
+################################################################################
+sub parse_qualifier {
+    my ($qualifier) = @_;
+
+    if ($qualifier =~ /^NOT (.+)/) {
+        $qualifier = $1;
+        return ":qualifierNOT :$qualifier";
+    } elsif ($qualifier eq "-") {
+        return ":qualifier :NA";
+    } else {
+        return ":qualifier :$qualifier";
+    }
+}
+
+sub parse_pubmed {
+    my ($pubmed) = @_;
+    
+    unless ($pubmed =~ /\d/) {
+        die;
+    }
+    if ($pubmed =~ /[^\d\|]/) {
+        die;
+    }
+
+    my @pubmed = split(/\|/, $pubmed);
+
+    my @pmid = map { "pmid:" . $_ } @pubmed;
+    my $pmids = join(", ", @pmid);
+
+    return $pmids;
 }
