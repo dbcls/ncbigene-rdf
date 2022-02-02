@@ -64,7 +64,7 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
                 }
                 my $has_qualifier = parse_qualifier($qualifier);
                 $annotation .= "        $has_qualifier ;\n";
-                $annotation .= "        :evidenceCode :$evidence\n";
+                $annotation .= "        :evidence :$evidence\n";
                 $annotation .= "    ]";
                 push @annotation, $annotation;
             }
