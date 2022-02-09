@@ -1,0 +1,18 @@
+#!/usr/bin/env spang2
+# @endpoint orth2
+# @option -ac
+
+PREFIX : <http://purl.org/orthordf/ontology#>
+
+SELECT (COUNT(DISTINCT ?go) AS ?count) ?gene ?label ?description
+WHERE {
+  ?gene :taxid taxid:9606 ;
+        :gene2go ?go .
+  OPTIONAL {
+    ?gene rdfs:label ?label .
+  }
+  OPTIONAL {
+    ?gene dct:description ?description .
+  }
+}
+ORDER BY DESC(?count)
