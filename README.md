@@ -1,4 +1,4 @@
-# gene2go
+# RDFize gene2go
 
 Original data:
 * ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz
