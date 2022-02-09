@@ -1,27 +1,30 @@
 #!/usr/bin/env spang2
-# @endpoint https://orth.dbcls.jp/sparql-proxy
+# @endpoint https://orth.dbcls.jp/sparql-dev
 # @option -vac
 # @param geneid=1
 
 PREFIX : <http://purl.org/orthordf/ontology#>
+PREFIX ncbigene: <http://identifiers.org/ncbigene/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dct: <http://purl.org/dc/terms/>
 
 SELECT *
 FROM <http://purl.obolibrary.org/obo/go.owl>
 FROM <http://purl.org/orthordf/gene2go/>
 FROM <https://orth.dbcls.jp/rdf/resource/Homo_sapiens.gene_info>
 WHERE {
-  ncbigene:{{geneid}} :taxid ?taxid ;
+  ncbigene:1 :taxid ?taxid ;
         :gene2go ?go .
   OPTIONAL {
     ?go rdfs:label ?label .
   }
-  ncbigene:{{geneid}} :hasGOAnnotation ?goa .
+  ncbigene:1 :hasGOAnnotation ?goa .
   ?goa :hasGO ?go ;
        :evidence ?evidence ;
        :qualifier ?qualifier ;
        dct:references ?ref ;
        :category ?cat .
   OPTIONAL {
-    ncbigene:{{geneid}} rdfs:label ?gene_label .
+    ncbigene:1 rdfs:label ?gene_label .
   }
 }
