@@ -79,4 +79,13 @@ ncbigene:12 :hasGOAnnotation
     ],
     [
 ...
+    [
+        :hasGO obo:GO_0045540 ;
+        :category :Process ;
+        :evidence :IDA ;
+        :qualifierNOT :involved_in ;
+        rdfs:label "regulation of cholesterol biosynthetic process" ;
+        dct:references pmid:21810484
+    ],
+...
 ```
