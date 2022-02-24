@@ -3,7 +3,13 @@
 Original data:
 * ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz
 
-RDF:
+RDF (simple version):
+```
+$ gunzip gene2go.gz
+$ cat gene2go | grep -P '^9606' |  ./gene2go.pl > gene2go.human.ttl
+```
+
+RDF (full version):
 ```
 $ gunzip gene2go.gz
 $ ./gene2go.pl gene2go > gene2go.ttl
