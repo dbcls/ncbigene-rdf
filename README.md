@@ -6,7 +6,16 @@ Original data:
 RDF (simple version):
 ```
 $ gunzip gene2go.gz
-$ cat gene2go | grep -P '^9606' |  ./gene2go.pl > gene2go.human.ttl
+$ cat gene2go | grep -P '^9606' | ./gene2go.pl > gene2go.human.ttl
+```
+
+```
+@prefix : <http://purl.org/net/orthordf/hOP/ontology#> .
+@prefix ncbigene: <http://identifiers.org/ncbigene/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
+ncbigene:1 :hasGO obo:GO_0005576, obo:GO_0005615, obo:GO_0031093, obo:GO_0034774, obo:GO_0062023, obo:GO_0070062, obo:GO_0072562, obo:GO_1904813 .
+
 ```
 
 RDF (full version):
