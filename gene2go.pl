@@ -12,6 +12,7 @@ getopts('', \%OPT);
 
 print '@prefix ncbigene: <http://identifiers.org/ncbigene/> .', "\n";
 print '@prefix obo: <http://purl.obolibrary.org/obo/> .', "\n";
+print '@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .', "\n";
 print '@prefix dct: <http://purl.org/dc/terms/> .', "\n";
 print '@prefix pmid: <http://identifiers.org/pubmed/> .', "\n";
 print '@prefix taxid: <http://identifiers.org/taxonomy/> .', "\n";
@@ -20,6 +21,7 @@ print "\n";
 
 my %GO = ();
 my %TAX = ();
+my %LABEL = ();
 !@ARGV && -t and die $USAGE;
 while (<>) {
     chomp;
@@ -41,6 +43,17 @@ while (<>) {
     } else {
         $GO{$geneid}{$goid}{$evidence}{$qualifier}{$pubmed} = $category;
     }
+    if ($go_term) {
+        if ($go_term =~ /"/) {
+            die;
+        }
+    }
+    if ($LABEL{$goid}) {
+        if ($LABEL{$goid} ne $go_term) {
+            die;
+        }
+    }
+    $LABEL{$goid} = $go_term;
     $TAX{$geneid}{$taxid} = 1;
 }
 
@@ -60,6 +73,7 @@ for my $geneid (sort {$a <=> $b} keys %GO) {
                 $annotation .= "        :category :$category ;\n";
                 $annotation .= "        :evidence :$evidence ;\n";
                 $annotation .= "        " . parse_qualifier($qualifier) . " ;\n";
+                $annotation .= "        rdfs:label \"" . $LABEL{$goid} . "\" ;\n";
                 if (@pubmed && @pubmed == 1) {
                     $annotation .= "        dct:references " . parse_pubmed($pubmed[0]) . "\n";
                 } else {
