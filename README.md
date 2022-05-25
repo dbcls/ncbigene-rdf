@@ -24,9 +24,6 @@ $ gunzip gene2go.gz
 $ ./gene2go.pl gene2go > gene2go.ttl
 ```
 
-Test endpoint:
-* https://orth.dbcls.jp/sparql-dev
-
 Part of Turtle file:
 ```
 @prefix ncbigene: <http://identifiers.org/ncbigene/> .
