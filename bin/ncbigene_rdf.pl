@@ -63,15 +63,15 @@ while (<>) {
     if ($field[11] ne "-") {
         print "    :fullName \"$field[11]\" ;\n";
     }
-    if ($field[15] ne "-") {
-        my $feature_type = format_str_array($field[15]);
-        print "    :featureType $feature_type ;\n";
-    }
     if ($field[5] ne "-") {
         my $db_xref = filter_str($field[5]);
         if ($db_xref) {
             print "    nuc:db_xref $db_xref ;\n";
         }
+    }
+    if ($field[15] ne "-") {
+        my $feature_type = format_str_array($field[15]);
+        print "    :featureType $feature_type ;\n";
     }
     print "    :taxid taxid:$taxid ;\n";
     print "    nuc:chromosome \"$field[6]\" ;\n";
