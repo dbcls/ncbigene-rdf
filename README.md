@@ -1,9 +1,17 @@
-# RDFize gene2go
+# NCBI Gene RDF
 
-Original data:
-* ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz
+## Original data
+* Data provider
+  * National Center for Biotechnology Information
+* License
+  * https://www.ncbi.nlm.nih.gov/home/about/policies/
+* Download
+  * ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
+  * ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz
 
-RDF (simple version):
+## Created RDF
+
+gene2go (simple version):
 ```
 $ gunzip gene2go.gz
 $ cat gene2go | grep -P '^9606' | ./gene2go.pl > gene2go.human.ttl
@@ -18,7 +26,7 @@ ncbigene:1 :hasGO obo:GO_0005576, obo:GO_0005615, obo:GO_0031093, obo:GO_0034774
 
 ```
 
-RDF (full version):
+gene2go (full version):
 ```
 $ gunzip gene2go.gz
 $ ./gene2go.pl gene2go > gene2go.ttl
