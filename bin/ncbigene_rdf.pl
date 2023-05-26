@@ -70,7 +70,7 @@ while (<>) {
     if ($field[5] ne "-") {
         my $db_xref = filter_str($field[5]);
         if ($db_xref) {
-            print "    nuc:db_xref \"$db_xref\" ;\n";
+            print "    nuc:db_xref $db_xref ;\n";
         }
     }
     print "    :taxid taxid:$taxid ;\n";
@@ -134,8 +134,8 @@ sub filter_str {
         } elsif ($a =~ /^Ensembl:(ENSG\d+)$/) {
         } elsif ($a =~ /^miRBase:(MI\d+)$/) {
         } else {
-            push(@link, $a);
+            push(@link, "\"$a\"");
         }
     }
-    return join("|", @link);
+    return join(" ,\n        ", @link);
 }
