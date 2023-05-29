@@ -24,10 +24,12 @@ print '@prefix : <http://purl.org/net/orthordf/hOP/ontology#> .', "\n";
 
 !@ARGV && -t and die $USAGE;
 
+my $ID = "";
 my $HEADER = <>;
 while (<>) {
     chomp;
     my @field = split("\t");
+    $ID = $field[1];
     my $label = quote_str($field[2]);
     my $standard_name = quote_str($field[10]);
     my $description = quote_str($field[8]);
@@ -52,7 +54,9 @@ while (<>) {
     }
     if ($field[5] ne "-") {
         my $link = format_link($field[5]);
-        print "    nuc:dblink $link ;\n";
+        if ($link) {
+            print "    nuc:dblink $link ;\n";
+        }
     }
     print "    :typeOfGene \"$field[9]\" ;\n";
     if ($field[12] eq "O") {
@@ -140,15 +144,26 @@ sub filter_str {
 sub quote_str {
     my ($str) = @_;
 
+    if ($str =~ /\\/) {
+        print STDERR "$ID $str";
+        $str =~ s/\\/\\\\/g;
+        print STDERR " => $str\n";
+    }
+
     my $quoted;
     if ($str =~ /^"[^"]*"$/) {
         $quoted = $str;
-        print STDERR "$quoted\n";
+        print STDERR "$ID $quoted\n";
+    } elsif ($str =~ /"/ && $str =~ /'/ && $str !~ /"""/) {
+        $quoted = '"""' . $str . '"""';
+        print STDERR "$ID $quoted\n";
     } elsif ($str !~ /"/) {
         $quoted = '"' . $str . '"';
+    } elsif ($str !~ /'/) {
+        $quoted =  "'$str'";
+        print STDERR "$ID $quoted\n";
     } else {
-        $quoted = '"""' . $str . '"""';
-        print STDERR "$quoted\n";
+        die $str;
     }
     return $quoted;
 }
