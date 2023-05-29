@@ -28,9 +28,6 @@ my $HEADER = <>;
 while (<>) {
     chomp;
     my @field = split("\t");
-    my $taxid = $field[0];
-    my $description = $field[8];
-    my $Other_designations = $field[13];
     print "\n";
     print "ncbigene:$field[1] a nuc:Gene ;\n";
     print "    dct:identifier $field[1] ;\n";
@@ -42,12 +39,12 @@ while (<>) {
         my $synonyms = format_str_array($field[4]);
         print "    nuc:gene_synonym $synonyms ;\n";
     }
-    print "    dct:description \"$description\" ;\n";
-    if ($Other_designations ne "-") {
-        my $out = format_str_array($Other_designations);
-        # my $out = format_str_array($Other_designations, $description); # exclude redundant description from other_designations
-        if ($out) {
-            print "    dct:alternative $out ;\n";
+    print "    dct:description \"$field[8]\" ;\n";
+    if ($field[13] ne "-") {
+        my $others = format_str_array($field[13]);
+        # my $others = format_str_array($field[13], $field[8]); # exclude redundant description from other_designations
+        if ($others) {
+            print "    dct:alternative $others ;\n";
         }
     }
     if ($field[5] ne "-") {
@@ -73,7 +70,7 @@ while (<>) {
         my $feature_type = format_str_array($field[15]);
         print "    :featureType $feature_type ;\n";
     }
-    print "    :taxid taxid:$taxid ;\n";
+    print "    :taxid taxid:$field[0] ;\n";
     print "    nuc:chromosome \"$field[6]\" ;\n";
     print "    nuc:map \"$field[7]\" ;\n";
     my $date = format_date($field[14]);
@@ -90,19 +87,16 @@ sub format_date {
 
 sub format_str_array {
     my ($str, $exclude) = @_;
-
     my @arr = split(/\|/, $str);
-
-    my @out = ();
-    for my $elem (@arr) {
-        if ($exclude && $elem eq $exclude) {
+    my @str_arr = ();
+    for my $a (@arr) {
+        if ($exclude && $a eq $exclude) {
             next;
         }
-        push(@out, "\"$elem\"");
+        push(@str_arr, "\"$a\"");
     }
-
-    if (@out) {
-        return join(" ,\n        ", @out);
+    if (@str_arr) {
+        return join(" ,\n        ", @str_arr);
     }
 }
 
