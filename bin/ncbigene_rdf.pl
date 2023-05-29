@@ -28,18 +28,21 @@ my $HEADER = <>;
 while (<>) {
     chomp;
     my @field = split("\t");
+    my $label = quote_str($field[2]);
+    my $standard_name = quote_str($field[10]);
+    my $description = quote_str($field[8]);
     print "\n";
     print "ncbigene:$field[1] a nuc:Gene ;\n";
     print "    dct:identifier $field[1] ;\n";
-    print "    rdfs:label \"$field[2]\" ;\n";
+    print "    rdfs:label $label ;\n";
     if ($field[10] ne "-") {
-        print "    nuc:standard_name \"$field[10]\" ;\n";
+        print "    nuc:standard_name $standard_name ;\n";
     }
     if ($field[4] ne "-") {
         my $synonyms = format_str_array($field[4]);
         print "    nuc:gene_synonym $synonyms ;\n";
     }
-    print "    dct:description \"$field[8]\" ;\n";
+    print "    dct:description $description ;\n";
     if ($field[13] ne "-") {
         my $others = format_str_array($field[13]);
         # my $others = format_str_array($field[13], $field[8]); # exclude redundant description from other_designations
@@ -93,7 +96,7 @@ sub format_str_array {
         if ($exclude && $a eq $exclude) {
             next;
         }
-        push(@str_arr, "\"$a\"");
+        push(@str_arr, quote_str($a));
     }
     if (@str_arr) {
         return join(" ,\n        ", @str_arr);
@@ -128,8 +131,24 @@ sub filter_str {
         } elsif ($a =~ /^Ensembl:(ENSG\d+)$/) {
         } elsif ($a =~ /^miRBase:(MI\d+)$/) {
         } else {
-            push(@link, "\"$a\"");
+            push(@link, quote_str($a));
         }
     }
     return join(" ,\n        ", @link);
+}
+
+sub quote_str {
+    my ($str) = @_;
+
+    my $quoted;
+    if ($str =~ /^"[^"]*"$/) {
+        $quoted = $str;
+        print STDERR "$quoted\n";
+    } elsif ($str !~ /"/) {
+        $quoted = '"' . $str . '"';
+    } else {
+        $quoted = '"""' . $str . '"""';
+        print STDERR "$quoted\n";
+    }
+    return $quoted;
 }
