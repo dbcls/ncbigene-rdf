@@ -25,19 +25,24 @@ print '@prefix : <http://purl.org/net/orthordf/hOP/ontology#> .', "\n";
 !@ARGV && -t and die $USAGE;
 
 my $ID = "";
-my $HEADER = <>;
 while (<>) {
     chomp;
+    if (/^#/) {
+        print STDERR "Skip $_\n";
+        next;
+    }
+
     my @field = split("\t");
     $ID = $field[1];
     my $label = quote_str($field[2]);
-    my $standard_name = quote_str($field[10]);
     my $description = quote_str($field[8]);
+
     print "\n";
     print "ncbigene:$field[1] a insdc:Gene ;\n";
     print "    dct:identifier $field[1] ;\n";
     print "    rdfs:label $label ;\n";
     if ($field[10] ne "-") {
+        my $standard_name = quote_str($field[10]);
         print "    insdc:standard_name $standard_name ;\n";
     }
     if ($field[4] ne "-") {
