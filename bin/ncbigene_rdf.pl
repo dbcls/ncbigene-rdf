@@ -19,7 +19,7 @@ print '@prefix hgnc: <http://identifiers.org/hgnc/> .', "\n";
 print '@prefix mim: <http://identifiers.org/mim/> .', "\n";
 print '@prefix mirbase: <http://identifiers.org/mirbase/> .', "\n";
 print '@prefix ensembl: <http://identifiers.org/ensembl/> .', "\n";
-print '@prefix nuc: <http://ddbj.nig.ac.jp/ontologies/nucleotide/> .', "\n";
+print '@prefix insdc: <http://ddbj.nig.ac.jp/ontologies/nucleotide/> .', "\n";
 print '@prefix : <http://purl.org/net/orthordf/hOP/ontology#> .', "\n";
 
 !@ARGV && -t and die $USAGE;
@@ -34,15 +34,15 @@ while (<>) {
     my $standard_name = quote_str($field[10]);
     my $description = quote_str($field[8]);
     print "\n";
-    print "ncbigene:$field[1] a nuc:Gene ;\n";
+    print "ncbigene:$field[1] a insdc:Gene ;\n";
     print "    dct:identifier $field[1] ;\n";
     print "    rdfs:label $label ;\n";
     if ($field[10] ne "-") {
-        print "    nuc:standard_name $standard_name ;\n";
+        print "    insdc:standard_name $standard_name ;\n";
     }
     if ($field[4] ne "-") {
         my $synonyms = format_str_array($field[4]);
-        print "    nuc:gene_synonym $synonyms ;\n";
+        print "    insdc:gene_synonym $synonyms ;\n";
     }
     print "    dct:description $description ;\n";
     if ($field[13] ne "-") {
@@ -55,7 +55,7 @@ while (<>) {
     if ($field[5] ne "-") {
         my $link = format_link($field[5]);
         if ($link) {
-            print "    nuc:dblink $link ;\n";
+            print "    insdc:dblink $link ;\n";
         }
     }
     print "    :typeOfGene \"$field[9]\" ;\n";
@@ -70,7 +70,7 @@ while (<>) {
     if ($field[5] ne "-") {
         my $db_xref = filter_str($field[5]);
         if ($db_xref) {
-            print "    nuc:db_xref $db_xref ;\n";
+            print "    insdc:db_xref $db_xref ;\n";
         }
     }
     if ($field[15] ne "-") {
@@ -78,8 +78,8 @@ while (<>) {
         print "    :featureType $feature_type ;\n";
     }
     print "    :taxid taxid:$field[0] ;\n";
-    print "    nuc:chromosome \"$field[6]\" ;\n";
-    print "    nuc:map \"$field[7]\" ;\n";
+    print "    insdc:chromosome \"$field[6]\" ;\n";
+    print "    insdc:map \"$field[7]\" ;\n";
     my $date = format_date($field[14]);
     print "    dct:modified \"$date\"^^xsd:date .\n";
 }
