@@ -45,11 +45,17 @@ while (<>) {
         my $standard_name = quote_str($field[10]);
         print "    insdc:standard_name $standard_name ;\n";
     }
+    if ($field[3] ne "-") {
+        my $locus_tag = quote_str($field[3]);
+        print "    insdc:locus_tag $locus_tag ;\n";
+    }
     if ($field[4] ne "-") {
         my $synonyms = format_str_array($field[4]);
         print "    insdc:gene_synonym $synonyms ;\n";
     }
-    print "    dct:description $description ;\n";
+    if ($field[8] ne "-") {
+        print "    dct:description $description ;\n";
+    }
     if ($field[13] ne "-") {
         my $others = format_str_array($field[13]);
         # my $others = format_str_array($field[13], $field[8]); # exclude redundant description from other_designations
@@ -83,8 +89,12 @@ while (<>) {
         print "    :featureType $feature_type ;\n";
     }
     print "    :taxid taxid:$field[0] ;\n";
-    print "    insdc:chromosome \"$field[6]\" ;\n";
-    print "    insdc:map \"$field[7]\" ;\n";
+    if ($field[6] ne "-") {
+        print "    insdc:chromosome \"$field[6]\" ;\n";
+    }
+    if ($field[7] ne "-") {
+        print "    insdc:map \"$field[7]\" ;\n";
+    }
     my $date = format_date($field[14]);
     print "    dct:modified \"$date\"^^xsd:date .\n";
 }
