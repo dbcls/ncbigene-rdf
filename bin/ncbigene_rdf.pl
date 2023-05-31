@@ -35,7 +35,6 @@ while (<>) {
     my @field = split("\t");
     $ID = $field[1];
     my $label = quote_str($field[2]);
-    my $description = quote_str($field[8]);
 
     print "\n";
     print "ncbigene:$field[1] a insdc:Gene ;\n";
@@ -54,6 +53,7 @@ while (<>) {
         print "    insdc:gene_synonym $synonyms ;\n";
     }
     if ($field[8] ne "-") {
+        my $description = quote_str($field[8]);
         print "    dct:description $description ;\n";
     }
     if ($field[13] ne "-") {
