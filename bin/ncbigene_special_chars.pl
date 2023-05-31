@@ -10,6 +10,7 @@ my $USAGE=
 my %OPT;
 getopts('', \%OPT);
 
+my @COUNT_DECIMAL;
 my @COUNT_HYPHEN;
 my @COUNT_OR;
 my @COUNT_SINGLE_QUOTE;
@@ -34,6 +35,9 @@ while (<>) {
     my $status = $f[12];
     my $others = $f[13];
     for (my $i=0; $i<@f; $i++) {
+        if ($f[$i] =~ /^\d+$/) {
+            $COUNT_DECIMAL[$i]++;
+        }
         if ($f[$i] eq "-") {
             $COUNT_HYPHEN[$i]++;
         }
@@ -54,14 +58,15 @@ while (<>) {
         }
     }    
 }
-print "-\t|\t\\\t'\t\"\t\"'\tcount in each field\n";
+print "decimal\t-\t|\t\\\t'\t\"\t\"'\tcount in each field\n";
 for (my $i=0; $i<@HEADER; $i++) {
+    my $count_decimal = $COUNT_DECIMAL[$i] || 0;
     my $count_hyphen = $COUNT_HYPHEN[$i] || 0;
     my $count_or = $COUNT_OR[$i] || 0;
     my $count_backslash = $COUNT_BACKSLASH[$i] || 0;
     my $count_single_quote = $COUNT_SINGLE_QUOTE[$i] || 0;
     my $count_double_quote = $COUNT_DOUBLE_QUOTE[$i] || 0;
     my $count_quote = $COUNT_QUOTE[$i] || 0;
-    print "$count_hyphen\t$count_or\t$count_backslash\t$count_single_quote\t$count_double_quote\t$count_quote\t[$i] $HEADER[$i]\n";
+    print "$count_decimal\t$count_hyphen\t$count_or\t$count_backslash\t$count_single_quote\t$count_double_quote\t$count_quote\t[$i] $HEADER[$i]\n";
 }
-print "$TOTAL\t\t\t\t\t\tgenes in total\n";
+print "$TOTAL\t\t\t\t\t\t\tgenes in total\n";
