@@ -11,9 +11,10 @@ my %OPT;
 getopts('', \%OPT);
 
 my @COUNT_HYPHEN;
-my @COUNT;
+my @COUNT_OR;
+my @COUNT_SINGLE_QUOTE;
+my @COUNT_DOUBLE_QUOTE;
 my @COUNT_QUOTE;
-my @COUNT_DOUBLEQUOTE;
 my @COUNT_BACKSLASH;
 my @HEADER;
 my $TOTAL = 0;
@@ -37,26 +38,30 @@ while (<>) {
             $COUNT_HYPHEN[$i]++;
         }
         if ($f[$i] =~ /\|/) {
-            $COUNT[$i]++;
+            $COUNT_OR[$i]++;
         }
         if ($f[$i] =~ /'/) {
-            $COUNT_QUOTE[$i]++;
+            $COUNT_SINGLE_QUOTE[$i]++;
         }
         if ($f[$i] =~ /"/) {
-            $COUNT_DOUBLEQUOTE[$i]++;
+            $COUNT_DOUBLE_QUOTE[$i]++;
+        }
+        if ($f[$i] =~ /'/ && $f[$i] =~ /"/) {
+            $COUNT_QUOTE[$i]++;
         }
         if ($f[$i] =~ /\\/) {
             $COUNT_BACKSLASH[$i]++;
         }
     }    
 }
-print "-\t|\t'\t\"\t\\\n";
+print "-\t|\t'\t\"\t\"'\t\\\tcount in each field\n";
 for (my $i=0; $i<@HEADER; $i++) {
     my $count_hyphen = $COUNT_HYPHEN[$i] || 0;
-    my $count = $COUNT[$i] || 0;
+    my $count_or = $COUNT_OR[$i] || 0;
+    my $count_single_quote = $COUNT_SINGLE_QUOTE[$i] || 0;
+    my $count_double_quote = $COUNT_DOUBLE_QUOTE[$i] || 0;
     my $count_quote = $COUNT_QUOTE[$i] || 0;
-    my $count_doublequote = $COUNT_DOUBLEQUOTE[$i] || 0;
     my $count_backslash = $COUNT_BACKSLASH[$i] || 0;
-    print "$count_hyphen\t$count\t$count_quote\t$count_doublequote\t$count_backslash\t[$i] $HEADER[$i]\n";
+    print "$count_hyphen\t$count_or\t$count_single_quote\t$count_double_quote\t$count_quote\t$count_backslash\t[$i] $HEADER[$i]\n";
 }
 print "$TOTAL\n";
