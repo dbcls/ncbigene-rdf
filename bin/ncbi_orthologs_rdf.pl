@@ -5,7 +5,7 @@ use Getopt::Std;
 my $PROGRAM = basename $0;
 my $USAGE=
 "Usage: $PROGRAM
--H: print human orthologs
+-H: only human orthologs
 ";
 
 my %OPT;
