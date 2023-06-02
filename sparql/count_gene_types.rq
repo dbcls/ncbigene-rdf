@@ -1,0 +1,11 @@
+#!/usr/bin/env spang2
+# @endpoint https://spang.dbcls.jp/sparql
+# @option -c
+
+PREFIX hop: <http://purl.org/net/orthordf/hOP/ontology#>
+
+SELECT (COUNT(?s) AS ?count) ?type
+WHERE {
+  ?s hop:typeOfGene ?type .
+}
+ORDER BY DESC(?count)
