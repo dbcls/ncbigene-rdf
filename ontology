@@ -1,0 +1,20 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <https://dbcls.github.io/ncbigene-rdf/ontology#> .
+
+### Properties for NCBI gene_info
+
+:typeOfGene a owl:DatatypeProperty .
+
+:nomenclatureStatus a owl:DatatypeProperty .
+
+:fullName a owl:DatatypeProperty .
+
+:featureType a owl:DatatypeProperty .
+
+:taxid a owl:ObjectProperty .
+
+
+### Properties for NCIBI gene2go
+
+:hasGO a owl:ObjectProperty .
+
