@@ -1,10 +1,13 @@
 #!/usr/bin/env spang2
-# @endpoint spang
+# @endpoint https://spang.dbcls.jp/sparql
 # @option -a
+
+PREFIX orth: <http://purl.org/net/orth#>
+PREFIX taxid: <http://identifiers.org/taxonomy/>
 
 SELECT *
 WHERE {
-  ?gene1 oo:taxon taxid:7955 .
-  ?gene2 oo:taxon taxid:8090 .
-  ?gene1 oo:hasOrtholog ?gene2 .
+  ?gene1 orth:hasOrtholog ?gene2 .
+  ?gene1 orth:taxon taxid:7955 .
+  ?gene2 orth:taxon taxid:8090 .
 }
