@@ -1,0 +1,10 @@
+#!/usr/bin/env spang2
+# @endpoint spang
+# @option -a
+
+SELECT *
+WHERE {
+  ?gene1 oo:taxon taxid:7955 .
+  ?gene2 oo:taxon taxid:8090 .
+  ?gene1 oo:hasOrtholog ?gene2 .
+}
