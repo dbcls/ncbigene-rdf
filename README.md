@@ -19,3 +19,6 @@ NCBI Gene
 
 Schema
 * https://raw.githubusercontent.com/dbcls/rdf-config/master/config/ncbigene/schema.svg
+
+Ontology
+* https://dbcls.github.io/ncbigene-rdf/ontology.ttl
