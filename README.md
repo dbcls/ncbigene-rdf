@@ -11,7 +11,7 @@ NCBI Gene
 * Download
   * ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
 
-## Creating RDF
+## Created RDF
 
 ```
 $ ./bin/ncbigene_rdf.pl gene_info
