@@ -17,6 +17,9 @@ NCBI Gene
 ./bin/ncbigene_rdf.pl gene_info
 ```
 
+RDF config
+* https://github.com/dbcls/rdf-config/tree/master/config/ncbigene
+
 Schema
 * https://raw.githubusercontent.com/dbcls/rdf-config/master/config/ncbigene/schema.svg
 
