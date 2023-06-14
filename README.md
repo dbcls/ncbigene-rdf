@@ -14,7 +14,7 @@ NCBI Gene
 ## Creating RDF
 
 ```
-./bin/ncbigene_rdf.pl gene_info
+$ ./bin/ncbigene_rdf.pl gene_info
 ```
 
 RDF config
