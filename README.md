@@ -24,4 +24,4 @@ Schema
 * https://raw.githubusercontent.com/dbcls/rdf-config/master/config/ncbigene/schema.svg
 
 Ontology
-* https://dbcls.github.io/ncbigene-rdf/ontology.ttl
+* https://dbcls.github.io/ncbigene-rdf/ontology.ttl (GitHub Pages)
