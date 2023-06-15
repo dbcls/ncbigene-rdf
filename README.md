@@ -28,3 +28,4 @@ Ontology
 
 SPARQL
 * [gene_info.rq](https://github.com/dbcls/ncbigene-rdf/blob/main/sparql/gene_info.rq)
+* [count_gene_types.rq](https://github.com/dbcls/ncbigene-rdf/blob/main/sparql/count_gene_types.rq)
