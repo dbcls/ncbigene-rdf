@@ -22,7 +22,10 @@ my @HEADER;
 my $TOTAL = 0;
 while (<>) {
     chomp;
-    my @f = split(/\t/, $_);
+    my @f = split(/\t/, $_, -1);
+    if (@f != 16) {
+        die;
+    }
     if ($. == 1) {
         $f[0] =~ s/^#//;
         @HEADER = @f;
