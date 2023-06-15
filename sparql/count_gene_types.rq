@@ -1,11 +1,9 @@
-#!/usr/bin/env spang2
-# @endpoint https://spang.dbcls.jp/sparql
-# @option -c
+# Count the number of genes for each gene type
 
-PREFIX hop: <http://purl.org/net/orthordf/hOP/ontology#>
+PREFIX ncbio: <https://dbcls.github.io/ncbigene-rdf/ontology.ttl#>
 
 SELECT (COUNT(?s) AS ?count) ?type
 WHERE {
-  ?s hop:typeOfGene ?type .
+  ?s ncbio:typeOfGene ?type .
 }
 ORDER BY DESC(?count)
