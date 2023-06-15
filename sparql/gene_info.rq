@@ -1,0 +1,10 @@
+# Extract NCBI gene info
+
+SELECT ?id ?label ?descr ?chr
+WHERE {
+  ncbigene:34 a insdc:Gene ;
+      dct:identifier ?id ;
+      rdfs:label ?label ;
+      dct:description ?descr ;
+      insdc:chromosome ?chr .
+}
