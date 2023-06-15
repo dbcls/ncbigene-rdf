@@ -25,3 +25,6 @@ Schema
 
 Ontology
 * https://dbcls.github.io/ncbigene-rdf/ontology.ttl (GitHub Pages)
+
+SPARQL
+* [gene_info.rq](https://github.com/dbcls/ncbigene-rdf/blob/main/sparql/gene_info.rq)
