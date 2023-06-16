@@ -1,4 +1,4 @@
-# Count the number of genes for each gene type
+# Count the number of each gene type
 
 PREFIX ncbio: <https://dbcls.github.io/ncbigene-rdf/ontology.ttl#>
 
