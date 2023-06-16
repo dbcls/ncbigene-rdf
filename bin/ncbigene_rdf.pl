@@ -57,8 +57,7 @@ while (<>) {
         print "    dct:description $description ;\n";
     }
     if ($field[13] ne "-") {
-        my $others = format_str_array($field[13]);
-        # my $others = format_str_array($field[13], $field[8]); # exclude redundant description from other_designations
+        my $others = format_str_array($field[13], $field[8]); # exclude redundant description from other_designations
         if ($others) {
             print "    dct:alternative $others ;\n";
         }
