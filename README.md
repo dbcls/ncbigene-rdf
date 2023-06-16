@@ -17,6 +17,9 @@ NCBI Gene
 $ ./bin/ncbigene_rdf.pl gene_info
 ```
 
+Creator
+* Hirokazu Chiba
+
 RDF config
 * https://github.com/dbcls/rdf-config/tree/master/config/ncbigene
 
