@@ -20,7 +20,7 @@ print '@prefix mim: <http://identifiers.org/mim/> .', "\n";
 print '@prefix mirbase: <http://identifiers.org/mirbase/> .', "\n";
 print '@prefix ensembl: <http://identifiers.org/ensembl/> .', "\n";
 print '@prefix insdc: <http://ddbj.nig.ac.jp/ontologies/nucleotide/> .', "\n";
-print '@prefix : <http://purl.org/net/orthordf/hOP/ontology#> .', "\n";
+print '@prefix : <https://dbcls.github.io/ncbigene-rdf/ontology.ttl#> .', "\n";
 
 !@ARGV && -t and die $USAGE;
 
