@@ -130,7 +130,7 @@ sub format_link {
             push(@link, "mim:$1");
         } elsif ($a =~ /^HGNC:HGNC:(\d+)$/) {
             push(@link, "hgnc:$1");
-        } elsif ($a =~ /^Ensembl:(ENSG\d+)$/) {
+        } elsif ($a =~ /^Ensembl:(\w+)$/) {
             push(@link, "ensembl:$1");
         } elsif ($a =~ /^miRBase:(MI\d+)$/) {
             push(@link, "mirbase:$1");
@@ -146,7 +146,7 @@ sub filter_str {
     for my $a (@arr) {
         if ($a =~ /^MIM:(\d+)$/) {
         } elsif ($a =~ /^HGNC:HGNC:(\d+)$/) {
-        } elsif ($a =~ /^Ensembl:(ENSG\d+)$/) {
+        } elsif ($a =~ /^Ensembl:(\w+)$/) {
         } elsif ($a =~ /^miRBase:(MI\d+)$/) {
         } else {
             push(@link, quote_str($a));
