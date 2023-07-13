@@ -35,85 +35,62 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         let fields: Vec<&str> = line.split('\t').collect();
-        let label = quote_str(fields[2]);
 
         writeln!(handle)?;
         writeln!(handle, "ncbigene:{} a insdc:Gene ;", fields[1])?;
         writeln!(handle, "    dct:identifier {} ;", fields[1])?;
-        writeln!(handle, "    rdfs:label {} ;", label)?;
-
+        writeln!(handle, "    rdfs:label {} ;", quote_str(fields[2]))?;
         if fields[10] != "-" {
-            let standard_name = quote_str(fields[10]);
-            writeln!(handle, "    insdc:standard_name {} ;", standard_name)?;
+            writeln!(handle, "    insdc:standard_name {} ;", quote_str(fields[10]))?;
         }
-
         if fields[3] != "-" {
-            let locus_tag = quote_str(fields[3]);
-            writeln!(handle, "    insdc:locus_tag {} ;", locus_tag)?;
+            writeln!(handle, "    insdc:locus_tag {} ;", quote_str(fields[3]))?;
         }
-
         if fields[4] != "-" {
-            let synonyms = format_str_array(fields[4]);
-            writeln!(handle, "    insdc:gene_synonym {} ;", synonyms)?;
+            writeln!(handle, "    insdc:gene_synonym {} ;", format_str_array(fields[4]))?;
         }
-
         if fields[8] != "-" {
-            let description = quote_str(fields[8]);
-            writeln!(handle, "    dct:description {} ;", description)?;
+            writeln!(handle, "    dct:description {} ;", quote_str(fields[8]))?;
         }
-
         if fields[13] != "-" {
             let others = format_str_array_exclude(fields[13], fields[8]);
             if others != "" {
                 writeln!(handle, "    dct:alternative {} ;", others)?;
             }
         }
-
         if fields[5] != "-" {
             let link = format_link(fields[5])?;
             if let Some(link) = link {
                 writeln!(handle, "    insdc:dblink {} ;", link)?;
             }
         }
-
         writeln!(handle, "    :typeOfGene \"{}\" ;", fields[9])?;
-
         if fields[12] == "O" {
             writeln!(handle, "    :nomenclatureStatus \"official\" ;")?;
         } else if fields[12] == "I" {
             writeln!(handle, "    :nomenclatureStatus \"interim\" ;")?;
         }
-
         if fields[11] != "-" {
             writeln!(handle, "    :fullName \"{}\" ;", fields[11])?;
         }
-
         if fields[5] != "-" {
             let db_xref = filter_str(fields[5])?;
             if let Some(db_xref) = db_xref {
                 writeln!(handle, "    insdc:db_xref {} ;", db_xref)?;
             }
         }
-
         if fields[15] != "-" {
-            let feature_type = format_str_array(fields[15]);
-            writeln!(handle, "    :featureType {} ;", feature_type)?;
+            writeln!(handle, "    :featureType {} ;", format_str_array(fields[15]))?;
         }
-
         writeln!(handle, "    :taxid taxid:{} ;", fields[0])?;
-
         if fields[6] != "-" {
             writeln!(handle, "    insdc:chromosome \"{}\" ;", fields[6])?;
         }
-
         if fields[7] != "-" {
             writeln!(handle, "    insdc:map \"{}\" ;", fields[7])?;
         }
-
-        let date = format_date(fields[14]);
-        writeln!(handle, "    dct:modified \"{}\"^^xsd:date .", date)?;
+        writeln!(handle, "    dct:modified \"{}\"^^xsd:date .", format_date(fields[14]))?;
     }
-
     Ok(())
 }
 
