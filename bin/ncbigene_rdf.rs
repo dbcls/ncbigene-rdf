@@ -120,12 +120,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 fn quote_str(s: &str) -> String {
     if s.contains('\\') {
         let s = s.replace("\\", "\\\\");
-        s;
     }
 
-    let quoted = if s.starts_with('"') && s.ends_with('"') {
-        s.to_string()
-    } else if s.contains('"') && s.contains('\'') && !s.contains("\"\"\"") {
+    let quoted = if s.contains('"') && s.contains('\'') && !s.contains("\"\"\"") {
         format!("\"\"\"{}\"\"\"", s)
     } else if !s.contains('"') {
         format!("\"{}\"", s)
@@ -156,7 +153,7 @@ fn format_str_array_exclude(str: &str, exclude: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
     let mut out: Vec<String> = Vec::new();
     for a in arr {
-        if (a == exclude) {
+        if a == exclude {
             continue;
         }
         out.push(format!("\"{}\"", a));
