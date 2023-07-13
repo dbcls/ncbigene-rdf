@@ -132,7 +132,7 @@ fn format_str_array_exclude(str: &str, exclude: &str) -> String {
         if a == exclude {
             continue;
         }
-        out.push(format!("\"{}\"", a));
+        out.push(quote_str(a));
     }
     out.join(" ,\n        ")
 }
