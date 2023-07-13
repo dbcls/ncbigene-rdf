@@ -121,7 +121,7 @@ fn format_date(date: &str) -> String {
 
 fn format_str_array(str: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
-    let str_arr: Vec<String> = arr.iter().map(|a| format!("{}", quote_str(a))).collect();
+    let str_arr: Vec<String> = arr.iter().map(|a| quote_str(a)).collect();
     str_arr.join(" ,\n        ")
 }
 
