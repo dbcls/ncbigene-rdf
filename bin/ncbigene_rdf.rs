@@ -95,8 +95,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn quote_str(s: &str) -> String {
+    let mut s: String = s.to_string();
     if s.contains('\\') {
-        let s = s.replace("\\", "\\\\");
+        s = s.replace("\\", "\\\\");
     }
 
     let quoted = if s.contains('"') && s.contains('\'') && !s.contains("\"\"\"") {
