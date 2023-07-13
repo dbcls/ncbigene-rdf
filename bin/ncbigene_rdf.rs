@@ -28,20 +28,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     writeln!(handle, "@prefix insdc: <http://ddbj.nig.ac.jp/ontologies/nucleotide/> .")?;
     writeln!(handle, "@prefix : <https://dbcls.github.io/ncbigene-rdf/ontology.ttl#> .")?;
 
-    let mut id = String::new();
-    let mut skipped_lines = Vec::new();
-
     for line in reader.lines() {
         let line = line?;
         if line.starts_with('#') {
-            eprintln!("Skip {}", line);
-            skipped_lines.push(line);
             continue;
         }
 
         let fields: Vec<&str> = line.split('\t').collect();
-        id = fields[1].to_string();
-        let label = quote_str(fields[2])?;
+        let label = quote_str(fields[2]);
 
         writeln!(handle)?;
         writeln!(handle, "ncbigene:{} a insdc:Gene ;", fields[1])?;
@@ -49,12 +43,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         writeln!(handle, "    rdfs:label {} ;", label)?;
 
         if fields[10] != "-" {
-            let standard_name = quote_str(fields[10])?;
+            let standard_name = quote_str(fields[10]);
             writeln!(handle, "    insdc:standard_name {} ;", standard_name)?;
         }
 
         if fields[3] != "-" {
-            let locus_tag = quote_str(fields[3])?;
+            let locus_tag = quote_str(fields[3]);
             writeln!(handle, "    insdc:locus_tag {} ;", locus_tag)?;
         }
 
@@ -64,13 +58,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         if fields[8] != "-" {
-            let description = quote_str(fields[8])?;
+            let description = quote_str(fields[8]);
             writeln!(handle, "    dct:description {} ;", description)?;
         }
 
         if fields[13] != "-" {
-            let others = format_str_array(fields[13]);
-            writeln!(handle, "    dct:alternative {} ;", others)?;
+            let others = format_str_array_exclude(fields[13], fields[8]);
+            if others != "" {
+                writeln!(handle, "    dct:alternative {} ;", others)?;
+            }
         }
 
         if fields[5] != "-" {
@@ -118,20 +114,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         writeln!(handle, "    dct:modified \"{}\"^^xsd:date .", date)?;
     }
 
-    if !skipped_lines.is_empty() {
-        eprintln!("Skipped lines:");
-        for line in skipped_lines {
-            eprintln!("{}", line);
-        }
-    }
-
     Ok(())
 }
 
-fn quote_str(s: &str) -> Result<String, io::Error> {
+fn quote_str(s: &str) -> String {
     if s.contains('\\') {
         let s = s.replace("\\", "\\\\");
-        return Ok(s);
+        s;
     }
 
     let quoted = if s.starts_with('"') && s.ends_with('"') {
@@ -143,13 +132,10 @@ fn quote_str(s: &str) -> Result<String, io::Error> {
     } else if !s.contains('\'') {
         format!("'{}'", s)
     } else {
-        return Err(io::Error::new(
-            io::ErrorKind::Other,
-            format!("Invalid string: {}", s),
-        ));
+        s.to_string()
     };
 
-    Ok(quoted)
+    quoted
 }
 
 fn format_date(date: &str) -> String {
@@ -164,6 +150,18 @@ fn format_str_array(str: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
     let str_arr: Vec<String> = arr.iter().map(|a| format!("\"{}\"", a)).collect();
     str_arr.join(" ,\n        ")
+}
+
+fn format_str_array_exclude(str: &str, exclude: &str) -> String {
+    let arr: Vec<&str> = str.split('|').collect();
+    let mut out: Vec<String> = Vec::new();
+    for a in arr {
+        if (a == exclude) {
+            continue;
+        }
+        out.push(format!("\"{}\"", a));
+    }
+    out.join(" ,\n        ")
 }
 
 fn format_link(str: &str) -> Result<Option<String>, io::Error> {
@@ -197,7 +195,7 @@ fn filter_str(str: &str) -> Result<Option<String>, io::Error> {
         } else if let Some(ensembl) = a.strip_prefix("Ensembl:") {
         } else if let Some(mirbase) = a.strip_prefix("miRBase:") {
         } else {
-            link.push(quote_str(a)?);
+            link.push(quote_str(a));
         }
     }
     if !link.is_empty() {
