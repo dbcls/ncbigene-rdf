@@ -100,17 +100,15 @@ fn quote_str(s: &str) -> String {
         s = s.replace("\\", "\\\\");
     }
 
-    let quoted = if s.contains('"') && s.contains('\'') && !s.contains("\"\"\"") {
+    if s.contains('"') && s.contains('\'') && !s.contains("\"\"\"") {
         format!("\"\"\"{}\"\"\"", s)
     } else if !s.contains('"') {
         format!("\"{}\"", s)
     } else if !s.contains('\'') {
         format!("'{}'", s)
     } else {
-        s.to_string()
-    };
-
-    quoted
+        s
+    }
 }
 
 fn format_date(date: &str) -> String {
@@ -123,7 +121,7 @@ fn format_date(date: &str) -> String {
 
 fn format_str_array(str: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
-    let str_arr: Vec<String> = arr.iter().map(|a| format!("\"{}\"", a)).collect();
+    let str_arr: Vec<String> = arr.iter().map(|a| format!("{}", quote_str(a))).collect();
     str_arr.join(" ,\n        ")
 }
 
