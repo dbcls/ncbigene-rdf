@@ -57,8 +57,8 @@ fn main() -> std::io::Result<()> {
             }
         }
         if fields[5] != "-" {
-            let link = format_link(fields[5])?;
-            if let Some(link) = link {
+            let link = format_link(fields[5]);
+            if link != "" {
                 writeln!(writer, "    insdc:dblink {} ;", link)?;
             }
         }
@@ -127,7 +127,7 @@ fn format_str_array_exclude(str: &str, exclude: &str) -> String {
     out.join(" ,\n        ")
 }
 
-fn format_link(str: &str) -> Result<Option<String>, io::Error> {
+fn format_link(str: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
     let mut link = Vec::new();
     for a in arr {
@@ -141,12 +141,7 @@ fn format_link(str: &str) -> Result<Option<String>, io::Error> {
             link.push(format!("mirbase:{}", mirbase));
         }
     }
-    if !link.is_empty() {
-        let formatted_link = link.join(" ,\n        ");
-        Ok(Some(formatted_link))
-    } else {
-        Ok(None)
-    }
+    link.join(" ,\n        ")
 }
 
 fn filter_str(str: &str) -> Result<Option<String>, io::Error> {
