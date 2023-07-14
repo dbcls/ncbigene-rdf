@@ -34,7 +34,7 @@ fn main() -> std::io::Result<()> {
 
         let fields: Vec<&str> = line.split('\t').collect();
 
-        writeln!(writer)?;
+        writeln!(writer, "")?;
         writeln!(writer, "ncbigene:{} a insdc:Gene ;", fields[1])?;
         writeln!(writer, "    dct:identifier {} ;", fields[1])?;
         writeln!(writer, "    rdfs:label {} ;", quote_str(fields[2]))?;
