@@ -6,7 +6,7 @@ fn main() -> std::io::Result<()> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
         eprintln!("Usage: {} <input_file>", args[0]);
-        return Ok(());
+        std::process::exit(1);
     }
     let input_file = &args[1];
     let file = File::open(input_file)?;
