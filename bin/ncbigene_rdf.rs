@@ -95,19 +95,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn quote_str(s: &str) -> String {
-    let mut s: String = s.to_string();
-    if s.contains('\\') {
-        s = s.replace("\\", "\\\\");
+    let mut r = String::from(s);
+    if r.contains('\\') {
+        r = r.replace("\\", "\\\\");
     }
 
-    if s.contains('"') && s.contains('\'') && !s.contains("\"\"\"") {
-        format!("\"\"\"{}\"\"\"", s)
-    } else if !s.contains('"') {
-        format!("\"{}\"", s)
-    } else if !s.contains('\'') {
-        format!("'{}'", s)
+    if r.contains('"') && r.contains('\'') && !r.contains("\"\"\"") {
+        format!("\"\"\"{}\"\"\"", r)
+    } else if !r.contains('"') {
+        format!("\"{}\"", r)
+    } else if !r.contains('\'') {
+        format!("'{}'", r)
     } else {
-        s
+        r
     }
 }
 
