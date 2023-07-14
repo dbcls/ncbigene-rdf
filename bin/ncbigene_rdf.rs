@@ -9,9 +9,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
     let input_file = &args[1];
-
     let file = File::open(input_file)?;
-    let reader = io::BufReader::new(file);
 
     let mut handle = io::BufWriter::new(io::stdout());
 
@@ -27,6 +25,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     writeln!(handle, "@prefix insdc: <http://ddbj.nig.ac.jp/ontologies/nucleotide/> .")?;
     writeln!(handle, "@prefix : <https://dbcls.github.io/ncbigene-rdf/ontology.ttl#> .")?;
 
+    let reader = io::BufReader::new(file);
     for line in reader.lines() {
         let line = line?;
         if line.starts_with('#') {
