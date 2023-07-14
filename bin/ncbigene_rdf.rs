@@ -72,8 +72,8 @@ fn main() -> std::io::Result<()> {
             writeln!(writer, "    :fullName \"{}\" ;", fields[11])?;
         }
         if fields[5] != "-" {
-            let db_xref = filter_str(fields[5])?;
-            if let Some(db_xref) = db_xref {
+            let db_xref = filter_str(fields[5]);
+            if db_xref != "" {
                 writeln!(writer, "    insdc:db_xref {} ;", db_xref)?;
             }
         }
@@ -144,7 +144,7 @@ fn format_link(str: &str) -> String {
     link.join(" ,\n        ")
 }
 
-fn filter_str(str: &str) -> Result<Option<String>, io::Error> {
+fn filter_str(str: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
     let mut link = Vec::new();
     for a in arr {
@@ -156,12 +156,7 @@ fn filter_str(str: &str) -> Result<Option<String>, io::Error> {
             link.push(quote_str(a));
         }
     }
-    if !link.is_empty() {
-        let formatted_link = link.join(" ,\n        ");
-        Ok(Some(formatted_link))
-    } else {
-        Ok(None)
-    }
+    link.join(" ,\n        ")
 }
 
 fn format_date(date: &str) -> String {
