@@ -111,14 +111,6 @@ fn quote_str(s: &str) -> String {
     }
 }
 
-fn format_date(date: &str) -> String {
-    if date.len() == 8 {
-        format!("{}-{}-{}", &date[..4], &date[4..6], &date[6..8])
-    } else {
-        String::new()
-    }
-}
-
 fn format_str_array(str: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
     let str_arr: Vec<String> = arr.iter().map(|a| quote_str(a)).collect();
@@ -176,5 +168,13 @@ fn filter_str(str: &str) -> Result<Option<String>, io::Error> {
         Ok(Some(formatted_link))
     } else {
         Ok(None)
+    }
+}
+
+fn format_date(date: &str) -> String {
+    if date.len() == 8 {
+        format!("{}-{}-{}", &date[..4], &date[4..6], &date[6..8])
+    } else {
+        String::new()
     }
 }
