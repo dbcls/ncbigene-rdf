@@ -129,7 +129,7 @@ fn format_str_array_exclude(str: &str, exclude: &str) -> String {
 
 fn format_link(str: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
-    let mut link = Vec::new();
+    let mut link: Vec<String> = Vec::new();
     for a in arr {
         if let Some(mim) = a.strip_prefix("MIM:") {
             link.push(format!("mim:{}", mim));
@@ -146,12 +146,12 @@ fn format_link(str: &str) -> String {
 
 fn filter_str(str: &str) -> String {
     let arr: Vec<&str> = str.split('|').collect();
-    let mut link = Vec::new();
+    let mut link: Vec<String> = Vec::new();
     for a in arr {
-        if let Some(mim) = a.strip_prefix("MIM:") {
-        } else if let Some(hgnc) = a.strip_prefix("HGNC:HGNC:") {
-        } else if let Some(ensembl) = a.strip_prefix("Ensembl:") {
-        } else if let Some(mirbase) = a.strip_prefix("miRBase:") {
+        if a.starts_with("MIM:") {
+        } else if a.starts_with("HGNC:HGNC:") {
+        } else if a.starts_with("Ensembl:") {
+        } else if a.starts_with("miRBase:") {
         } else {
             link.push(quote_str(a));
         }
