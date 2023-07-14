@@ -23,6 +23,10 @@ Creator
 RDF config
 * https://github.com/dbcls/rdf-config/tree/master/config/ncbigene
 
+Metadata
+* https://github.com/dbcls/rdf-config/blob/master/config/ncbigene/metadata.yaml
+* https://github.com/dbcls/rdf-config/blob/master/config/ncbigene/metadata_ja.yaml
+
 Schema
 * https://raw.githubusercontent.com/dbcls/rdf-config/master/config/ncbigene/schema.svg
 
