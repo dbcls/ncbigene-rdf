@@ -1,6 +1,6 @@
 use std::env;
 use std::fs::File;
-use std::io::{self, BufRead, BufReader, Write, BufWriter};
+use std::io::{self, BufRead, Write};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
@@ -11,10 +11,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let input_file = &args[1];
 
     let file = File::open(input_file)?;
-    let reader = BufReader::new(file);
+    let reader = io::BufReader::new(file);
 
-    let stdout = io::stdout();
-    let mut handle = BufWriter::new(stdout.lock());
+    let mut handle = io::BufWriter::new(io::stdout());
 
     writeln!(handle, "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .")?;
     writeln!(handle, "@prefix dct: <http://purl.org/dc/terms/> .")?;
