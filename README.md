@@ -23,16 +23,18 @@ Creator
 RDF config
 * https://github.com/dbcls/rdf-config/tree/master/config/ncbigene
 
+Schema
+* https://raw.githubusercontent.com/dbcls/rdf-config/master/config/ncbigene/schema.svg
+
 Metadata
 * https://github.com/dbcls/rdf-config/blob/master/config/ncbigene/metadata.yaml
 * https://github.com/dbcls/rdf-config/blob/master/config/ncbigene/metadata_ja.yaml
 
-Schema
-* https://raw.githubusercontent.com/dbcls/rdf-config/master/config/ncbigene/schema.svg
-
-Ontology
-* https://dbcls.github.io/ncbigene-rdf/ontology.ttl (GitHub Pages)
-
 SPARQL
 * [gene_info.rq](https://github.com/dbcls/ncbigene-rdf/blob/main/sparql/gene_info.rq)
 * [gene_types.rq](https://github.com/dbcls/ncbigene-rdf/blob/main/sparql/gene_types.rq)
+
+## Ontology
+
+Ontology for NCBI Gene
+* https://dbcls.github.io/ncbigene-rdf/ontology.ttl (GitHub Pages)
