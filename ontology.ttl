@@ -1,20 +1,34 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix taxon: <http://ddbj.nig.ac.jp/ontologies/taxonomy/> .
 @prefix : <https://dbcls.github.io/ncbigene-rdf/ontology.ttl#> .
 
 ### Properties for NCBI gene_info
 
-:typeOfGene a owl:DatatypeProperty .
+:typeOfGene 
+    a owl:DatatypeProperty ;
+    rdfs:label "typeOfGene" .
 
-:nomenclatureStatus a owl:DatatypeProperty .
+:nomenclatureStatus 
+    a owl:DatatypeProperty ;
+    rdfs:label "nomenclatureStatus" .
 
-:fullName a owl:DatatypeProperty .
+:fullName 
+    a owl:DatatypeProperty ;
+    rdfs:label "fullName" .
 
-:featureType a owl:DatatypeProperty .
+:featureType 
+    a owl:DatatypeProperty ;
+    rdfs:label "featureType" .
 
-:taxid a owl:ObjectProperty .
+:taxid 
+    a owl:ObjectProperty ;
+    rdfs:label "taxid" ;
+    rdfs:range taxon:Taxon .
 
 
 ### Properties for NCIBI gene2go
 
-:hasGO a owl:ObjectProperty .
-
+:hasGO 
+    a owl:ObjectProperty ;
+    rdfs:label "hasGO" .
