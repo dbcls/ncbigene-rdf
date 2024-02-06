@@ -3,6 +3,10 @@
 @prefix taxon: <http://ddbj.nig.ac.jp/ontologies/taxonomy/> .
 @prefix : <https://dbcls.github.io/ncbigene-rdf/ontology.ttl#> .
 
+# RefSeqGenome
+
+# taxon
+
 ### Properties for NCBI gene_info
 
 :typeOfGene 
