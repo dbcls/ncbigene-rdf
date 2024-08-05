@@ -38,7 +38,7 @@ while (<>) {
 
     print "\n";
     print "ncbigene:$field[1] a insdc:Gene ;\n";
-    print "    dct:identifier $field[1] ;\n";
+    print "    dct:identifier \"$field[1]\" ;\n";
     print "    rdfs:label $label ;\n";
     if ($field[10] ne "-") {
         my $standard_name = quote_str($field[10]);
