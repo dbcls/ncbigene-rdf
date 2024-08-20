@@ -75,7 +75,8 @@ while (<>) {
         print "    :nomenclatureStatus \"interim\" ;\n";
     }
     if ($field[11] ne "-") {
-        print "    :fullName \"$field[11]\" ;\n";
+        my $full_name = quote_str($field[11]);
+        print "    :fullName ${full_name} ;\n";
     }
     if ($field[5] ne "-") {
         my $db_xref = filter_str($field[5]);
