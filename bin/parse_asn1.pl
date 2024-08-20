@@ -10,6 +10,11 @@ my $USAGE=
 my %OPT;
 getopts('', \%OPT);
 
+my $INPUT_FILE;
+if (@ARGV) {
+    $INPUT_FILE = $ARGV[0];
+}
+
 my $summary = "";
 my $reading = 0;
 while (<>) {
@@ -33,6 +38,9 @@ while (<>) {
 }
 
 if ($summary) {
+    my $out = "";
+    my $src = "";
+
     if ($summary =~ /",$/) {
         $summary =~ s/",$//;
         if ($summary =~ /(.*)\[(.*)\]/) {
@@ -40,12 +48,24 @@ if ($summary) {
             if ($text =~ / $/) {
                 $text =~ s/ $//;
             }
-            print "$text\n";
-            print STDERR "$comment\n";
+            $out = "$text\n";
+            $src = "$comment\n";
         } else {
-            print "$summary\n";
+            $out = "$summary\n";
         }
     } else {
         die $summary;
+    }
+
+    if ($INPUT_FILE) {
+        open(OUT, ">${INPUT_FILE}.en") or die;
+        print OUT $out;
+        close(OUT);
+        open(SRC, ">${INPUT_FILE}.src") or die;
+        print SRC $src;
+        close(SRC);
+    } else {
+        print $out;
+        print STDERR $src;
     }
 }
