@@ -1,0 +1,91 @@
+#!/usr/bin/perl -w
+use strict;
+use HTTP::Date 'str2time', 'time2iso';
+
+my $TARGET_URL = "ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz";
+my $COMMAND = "curl --max-time 100000 -LfsS";
+my $SCRIPT = "$ENV{HOME}/github/dbcls/ncbigene-rdf/bin/ncbigene_rdf.pl";
+
+### Directories ###
+my $RDF_DIR = "$ENV{HOME}/share/rdf/ncbigene";
+if (!-d $RDF_DIR) {
+    mkdir $RDF_DIR or die "Cannot make directory: $RDF_DIR";
+}
+my $TMP_DIR = "${RDF_DIR}/tmp";
+if (!-d $TMP_DIR) {
+    mkdir $TMP_DIR or die "Cannot make directory: $TMP_DIR";
+}
+chdir $TMP_DIR or die "Cannot change directory: $TMP_DIR";
+
+open(STDERR, ">>err") or die "Cannot redirect STDERR to 'err'";
+
+if ($TARGET_URL =~ /^(.*\/)(\S.+)$/) {
+    my ($dir, $local_name) = ($1, $2);
+
+    if (!-e $local_name) {
+        update_data($dir, $local_name);
+    }
+    while (1) {
+        check_update($dir, $local_name);
+        sleep 3600;
+    }
+}
+
+################################################################################
+### Function ###################################################################
+################################################################################
+
+sub update_data {
+    my ($dir, $local_name) = @_;
+
+    if ($local_name =~ /^(.*)\.gz$/) {
+        my $file_name_prefix = $1;
+        system "$COMMAND -OR $TARGET_URL";
+        system "cat $local_name | gunzip | $SCRIPT > ${file_name_prefix}.ttl";
+        system "touch -r $local_name ${file_name_prefix}.ttl";
+        system "ls -l ${file_name_prefix}.ttl >> ${file_name_prefix}.log";
+        system "mv -f ${file_name_prefix}.ttl ../";
+    }
+}
+
+sub check_update {
+    my ($dir, $local_name) = @_;
+
+    my @list = `$COMMAND $dir`;
+    chomp(@list);
+
+    my $local_day = get_local_day($local_name);
+
+    for my $line (@list) {
+        if ($line =~ /^(.*?) +(\d+) +(\S+) +(\S+) +(\d+) (\S+ +\S+ +\S+) (.*)/) {
+            my ($perm, $num, $group, $user, $size, $date, $name) = ($1, $2, $3, $4, $5, $6, $7);
+            if ($local_name eq $name && $local_day ne get_day($date)) {
+                update_data($dir, $local_name);
+            }
+        }
+    }
+}
+
+sub get_day {
+    my ($date) = @_;
+
+    my $time = time2iso(str2time($date, "GMT"));
+    $time =~ s/:00$//;
+    if ($time =~ /^(\S+) \S+$/) {
+        return $1;
+    } else {
+        die $time;
+    }
+}
+
+sub get_local_day {
+    my ($file) = @_;
+
+    my @stat = stat $file;
+    my $time = time2iso($stat[9]);
+    if ($time =~ /^(\S+) \S+$/) {
+        return $1;
+    } else {
+        die $time;
+    }
+}
